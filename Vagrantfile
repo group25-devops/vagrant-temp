@@ -1,4 +1,5 @@
 domain = "kubernetes.lab"
+worker_node_count = 1
 control_plane_endpoint = "k8s-master." + domain + ":6443"
 pod_network_cidr = "10.244.0.0/16"
 pod_network_type = "calico" # choose between calico and flannel
@@ -15,14 +16,14 @@ Vagrant.configure("2") do |config|
       master.vm.provision "shell", env: {"DOMAIN" => domain, "MASTER_NODE_IP" => master_node_ip} ,inline: <<-SHELL 
       echo "$MASTER_NODE_IP k8s-master.$DOMAIN k8s-master" >> /etc/hosts 
       SHELL
-      (1..2).each do |nodeIndex|
+      (1..worker_node_count).each do |nodeIndex|
         master.vm.provision "shell", env: {"DOMAIN" => domain, "NODE_INDEX" => nodeIndex}, inline: <<-SHELL 
         echo "192.168.57.10$NODE_INDEX k8s-worker-$NODE_INDEX.$DOMAIN k8s-worker-$NODE_INDEX" >> /etc/hosts 
         SHELL
       end
       master.vm.provision "shell", path:"kubeadm/init-master.sh", env: {"K8S_CONTROL_PLANE_ENDPOINT" => control_plane_endpoint, "K8S_POD_NETWORK_CIDR" => pod_network_cidr, "K8S_POD_NETWORK_TYPE" => pod_network_type, "MASTER_NODE_IP" => master_node_ip}
     end
-    (1..2).each do |nodeIndex|
+    (1..worker_node_count).each do |nodeIndex|
       config.vm.define "worker-#{nodeIndex}" do |worker|
         worker.vm.box = "ubuntu/focal64"
         worker.vm.hostname = "k8s-worker-#{nodeIndex}.#{domain}"
@@ -30,7 +31,7 @@ Vagrant.configure("2") do |config|
         worker.vm.provision "shell", env: {"DOMAIN" => domain, "MASTER_NODE_IP" => master_node_ip} ,inline: <<-SHELL 
         echo "$MASTER_NODE_IP k8s-master.$DOMAIN k8s-master" >> /etc/hosts 
         SHELL
-        (1..2).each do |hostIndex|
+        (1..worker_node_count).each do |hostIndex|
             worker.vm.provision "shell", env: {"DOMAIN" => domain, "NODE_INDEX" => hostIndex}, inline: <<-SHELL 
             echo "192.168.57.10$NODE_INDEX k8s-worker-$NODE_INDEX.$DOMAIN k8s-worker-$NODE_INDEX" >> /etc/hosts 
             SHELL
