@@ -45,8 +45,8 @@ Vagrant.configure("2") do |config|
       end
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = "3072"
-      vb.cpus = "1"
+      vb.memory = "2048"
+      vb.cpus = "2"
       vb.customize ["modifyvm", :id, "--nic1", "nat"]
     end
   end
