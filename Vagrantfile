@@ -5,11 +5,10 @@ pod_network_cidr = "10.244.0.0/16"
 pod_network_type = "calico" # choose between calico and flannel
 K8S_POD_NETWORK_TYPE = "pod_network_type"
 master_node_ip = "192.168.57.100"
-version = "1.26.0-00"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
-    config.vm.provision :shell, path: "kubeadm/bootstrap.sh", env: { "VERSION" => version }
+    config.vm.provision :shell, path: "kubeadm/bootstrap.sh"
     config.vm.define "master" do |master|
       master.vm.box = "ubuntu/focal64"
       master.vm.hostname = "k8s-master.#{domain}"
