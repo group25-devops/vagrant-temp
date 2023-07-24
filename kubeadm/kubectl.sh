@@ -9,3 +9,6 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 mkdir -p /home/vagrant/.kube
 sudo cp -f /etc/kubernetes/admin.conf /home/vagrant/.kube/config
 sudo chown $(id -u):$(id -g) /home/vagrant/.kube/config
+
+sudo chown -R vagrant /home/vagrant/.kube
+sudo chgrp -R vagrant /home/vagrant/.kube

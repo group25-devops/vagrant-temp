@@ -20,6 +20,9 @@ mkdir -p /home/vagrant/.kube
 sudo cp -f /etc/kubernetes/admin.conf /home/vagrant/.kube/config
 sudo chown 900:900 /home/vagrant/.kube/config
 
+sudo chown -R vagrant /home/vagrant/.kube
+sudo chgrp -R vagrant /home/vagrant/.kube
+
 sudo cp -i /etc/kubernetes/admin.conf /vagrant/kubeadm/admin.conf
 
 echo ">>> FIX KUBELET NODE IP"
