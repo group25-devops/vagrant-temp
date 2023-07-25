@@ -3,6 +3,7 @@ worker_node_count = 1
 control_plane_endpoint = "k8s-master." + domain + ":6443"
 pod_network_cidr = "10.244.0.0/16"
 pod_network_type = "calico" # choose between calico and flannel
+K8S_POD_NETWORK_TYPE = "pod_network_type"
 master_node_ip = "192.168.57.100"
 version = "1.26.0-00"
 
