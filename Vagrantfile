@@ -1,5 +1,5 @@
 domain = "kubernetes.lab"
-worker_node_count = 1
+worker_node_count = 0
 control_plane_endpoint = "k8s-master." + domain + ":6443"
 pod_network_cidr = "10.244.0.0/16"
 pod_network_type = "calico" # choose between calico and flannel

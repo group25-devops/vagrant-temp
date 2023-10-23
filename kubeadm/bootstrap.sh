@@ -5,21 +5,6 @@ echo ">>> SYSTEM UPDATE & UPGRADE"
 sudo apt update
 sudo apt -y upgrade
 
-echo ">>> ADD KUBERNETES REPOS"
-
-sudo apt-get install -y apt-transport-https ca-certificates curl
-
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
-
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" >> ~/kubernetes.list
-sudo mv ~/kubernetes.list /etc/apt/sources.list.d
-
-sudo apt update
-
-echo ">>> INSTALL KUBE-* TOOLS"
-
-sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
-sudo apt-mark hold kubelet kubeadm kubectl
 
 echo ">>> KERNEL MODULES"
 
@@ -42,20 +27,6 @@ sudo apt-get install \
     curl \
     gnupg \
     lsb-release -y
-
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt remove containerd 
-sudo apt update
-sudo apt install containerd.io -y
-sudo rm /etc/containerd/config.toml
-
-systemctl restart containerd
 
 
 echo ">>> DISABLE SWAP"
